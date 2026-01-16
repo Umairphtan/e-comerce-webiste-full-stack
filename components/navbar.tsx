@@ -5,10 +5,10 @@ import { motion } from "framer-motion";
 import { ShoppingBag, Menu } from "lucide-react";
 
 const navLinks = [
+  { name: "Shop", href: "/shop" },
   { name: "Men", href: "/category/men" },
   { name: "Women", href: "/category/women" },
   { name: "Accessories", href: "/category/accessories" },
-  { name: "Shop", href: "/shop" },
 ];
 
 export default function Navbar() {
@@ -20,19 +20,19 @@ export default function Navbar() {
       className="fixed top-0 left-0 w-full z-50 bg-white/80 backdrop-blur-xl border-b"
     >
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-        
+
         {/* Logo */}
         <Link href="/" className="text-2xl font-extrabold tracking-tight">
           SOLE<span className="text-primary">X</span>
         </Link>
 
         {/* Desktop Links */}
-        <nav className="hidden md:flex items-center gap-10">
+        <nav className="hidden md:flex items-center gap-10  ">
           {navLinks.map((link) => (
             <Link
               key={link.name}
               href={link.href}
-              className="text-sm font-medium text-gray-700 hover:text-black transition"
+              className="text-l font-medium text-gray-700 hover:text-black transition "
             >
               {link.name}
             </Link>
@@ -41,6 +41,8 @@ export default function Navbar() {
 
         {/* Actions */}
         <div className="flex items-center gap-4">
+
+          
           <Link href="/cart" className="relative">
             <ShoppingBag className="w-5 h-5" />
             <span className="absolute -top-2 -right-2 text-xs bg-black text-white rounded-full px-1">
