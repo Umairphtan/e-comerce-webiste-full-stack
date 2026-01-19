@@ -10,6 +10,8 @@ const navLinks = [
   { name: "Men", href: "/category/men" },
   { name: "Women", href: "/category/women" },
   { name: "Accessories", href: "/category/accessories" },
+  { name: "Contact Us", href: "/contact" },
+
 ];
 
 export default function Navbar() {
