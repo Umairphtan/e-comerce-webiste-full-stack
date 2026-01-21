@@ -4,6 +4,7 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { ShoppingBag, Menu, X } from "lucide-react";
 import { useState } from "react";
+import { useCart } from "@/context/cartcontext";
 
 const navLinks = [
   { name: "Shop", href: "/" },
@@ -11,15 +12,20 @@ const navLinks = [
   { name: "Women", href: "/category/women" },
   { name: "Accessories", href: "/category/accessories" },
   { name: "Contact Us", href: "/contact" },
-
 ];
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const { cart } = useCart();
+
+  // ✅ Quantity based count (professional)
+  const totalItems = cart.reduce(
+    (total, item) => total + item.quantity,
+    0
+  );
 
   return (
     <>
-      {/* Navbar */}
       <motion.header
         initial={{ y: -80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
@@ -29,10 +35,7 @@ export default function Navbar() {
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
 
           {/* Logo */}
-          <Link
-            href="/"
-            className="text-4xl font-black tracking-tight"
-          >
+          <Link href="/" className="text-4xl font-black tracking-tight">
             SOLE<span className="text-primary">X</span>
           </Link>
 
@@ -52,18 +55,21 @@ export default function Navbar() {
 
           {/* Actions */}
           <div className="flex items-center gap-6">
+
+            {/* 🛒 CART ICON WITH COUNT */}
             <Link href="/cart" className="relative">
               <ShoppingBag className="w-6 h-6" />
-              <span className="absolute -top-2 -right-2 text-xs bg-black text-white rounded-full px-1.5">
-                0
-              </span>
+              {totalItems > 0 && (
+                <span className="absolute -top-2 -right-2 min-w-[18px] h-[18px]
+                  text-[11px] flex items-center justify-center
+                  bg-black text-white rounded-full px-1">
+                  {totalItems}
+                </span>
+              )}
             </Link>
 
             {/* Mobile Toggle */}
-            <button
-              onClick={() => setOpen(true)}
-              className="md:hidden"
-            >
+            <button onClick={() => setOpen(true)} className="md:hidden">
               <Menu className="w-7 h-7" />
             </button>
           </div>
