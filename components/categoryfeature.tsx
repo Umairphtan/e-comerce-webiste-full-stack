@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 
 const categories = [
   { name: "Men", slug: "men", image: "/men.jpg" },
-  { name: "Women", slug: "women", image: "/women.jpg" },
+  { name: "Women", slug: "women", image: "/women1.webp" },
   { name: "Accessories", slug: "accessories", image: "/bag.jpg" },
 ];
 
@@ -26,7 +26,7 @@ export default function CategoryShowcase() {
             <img
               src={cat.image}
               alt={cat.name}
-              className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition duration-700"
+              className="absolute inset-0 w-full h-full object-full group-hover:scale-110 transition duration-700"
             />
 
             <div className="absolute inset-0 bg-black/40" />
