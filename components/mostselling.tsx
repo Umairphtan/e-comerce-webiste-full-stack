@@ -1,51 +1,62 @@
-// components/MostSelling.tsx
 "use client";
 
 import Image from "next/image";
 import Link from "next/link";
 import { mostSellingProducts } from "@/data/mostselling";
 import { motion } from "framer-motion";
+import { useCart } from "@/context/cartcontext";
 
 export default function MostSelling() {
-    return (
-        <section className="py-14 px-6 max-w-7xl mx-auto">
-            <h2 className="text-4xl font-bold mb-8 text-center">
-            Most Selling Products
-            </h2>
+  const { addToCart } = useCart();
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 ">
-                {mostSellingProducts.map((product) => (
-                    <motion.div
-                        key={product.id}
-                        whileHover={{ y: -6 }}
-                        className="bg-white rounded-2xl shadow-md overflow-hidden"
-                    >
-                        <Link href={`/product/${product.id}`}>
-                            <Image
-                                src={product.image}
-                                alt={product.title}
-                                width={300}
-                                height={300}
-                                className="object-cover w-full h-56"
-                            />
-                        </Link>
+  return (
+    <section className="py-14 px-4 sm:px-6 max-w-7xl mx-auto">
+      <h2 className="text-3xl sm:text-4xl font-bold mb-10 text-center">
+        Most Selling Products
+      </h2>
 
-                        <div className="p-4">
-                            <h3 className="font-semibold">{product.title}</h3>
-                            <p className="text-gray-600 text-sm capitalize">
-                                {product.category}
-                            </p>
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {mostSellingProducts.map((product) => (
+          <motion.div
+            key={product.id}
+            whileHover={{ y: -6 }}
+            transition={{ duration: 0.3 }}
+            className="group bg-white rounded-2xl shadow-md overflow-hidden flex flex-col"
+          >
+            {/* Image */}
+            <Link
+              href={`/product/${product.id}`}
+              className="relative w-full aspect-square"
+            >
+              <Image
+                src={product.image}
+                alt={product.title}
+                fill
+                className="object-cover group-hover:scale-105 transition"
+              />
+            </Link>
 
-                            <div className="flex items-center justify-between mt-3">
-                                <span className="font-bold text-lg">${product.price}</span>
-                                <button className="px-3 py-1 text-sm rounded-full bg-black text-white hover:bg-gray-800">
-                                    Add to Cart
-                                </button>
-                            </div>
-                        </div>
-                    </motion.div>
-                ))}
+            {/* Content */}
+            <div className="p-4 flex flex-col flex-1">
+              <h3 className="font-semibold">{product.title}</h3>
+              <p className="text-gray-500 text-sm capitalize">
+                {product.category}
+              </p>
+
+              <div className="mt-auto flex items-center justify-between pt-4">
+                <span className="font-bold">${product.price}</span>
+
+                <button
+                  onClick={() => addToCart(product)}
+                  className="px-4 py-2 text-sm rounded-full bg-black text-white hover:bg-gray-800"
+                >
+                  Add to Cart
+                </button>
+              </div>
             </div>
-        </section>
-    );
+          </motion.div>
+        ))}
+      </div>
+    </section>
+  );
 }
