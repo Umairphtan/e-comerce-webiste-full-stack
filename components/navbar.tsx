@@ -18,7 +18,6 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
   const { cart } = useCart();
 
-  // ✅ Quantity based count (professional)
   const totalItems = cart.reduce(
     (total, item) => total + item.quantity,
     0
