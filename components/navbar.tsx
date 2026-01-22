@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { ShoppingBag, Menu, X } from "lucide-react";
+import { ShoppingBag, Menu, X, User } from "lucide-react";
 import { useState } from "react";
 import { useCart } from "@/context/cartcontext";
 
@@ -17,59 +17,72 @@ const navLinks = [
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const { cart } = useCart();
-
-  const totalItems = cart.reduce(
-    (total, item) => total + item.quantity,
-    0
-  );
+  const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
 
   return (
     <>
+      {/* Header */}
       <motion.header
         initial={{ y: -80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5, ease: "easeOut" }}
-        className="fixed top-0 left-0 w-full z-50 bg-white/70 backdrop-blur-xl border-b"
+        className="fixed top-0 left-0 w-full z-50 bg-gray-100/95 backdrop-blur-md border-b border-gray-200 shadow-sm"
       >
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
 
           {/* Logo */}
-          <Link href="/" className="text-4xl font-black tracking-tight">
+          <Link href="/" className="text-4xl font-extrabold tracking-tight text-gray-900">
             SOLE<span className="text-primary">X</span>
           </Link>
 
           {/* Desktop Nav */}
-          <nav className="hidden md:flex items-center gap-12">
+          <nav className="hidden md:flex items-center gap-10">
             {navLinks.map((link) => (
               <Link
                 key={link.name}
                 href={link.href}
-                className="relative text-xl font-medium text-gray-700 hover:text-black transition group"
+                className="relative text-lg font-medium text-gray-700 hover:text-gray-900 transition group"
               >
                 {link.name}
-                <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-black transition-all duration-300 group-hover:w-full" />
+                <span className="absolute -bottom-1 left-0 w-0  bg-primary transition-all duration-300 group-hover:w-full" />
               </Link>
             ))}
           </nav>
 
           {/* Actions */}
-          <div className="flex items-center gap-6">
-
-            {/* 🛒 CART ICON WITH COUNT */}
-            <Link href="/cart" className="relative">
-              <ShoppingBag className="w-6 h-6" />
+          <div className="flex items-center gap-5">
+            {/* Cart */}
+            <Link
+              href="/cart"
+              className="relative flex items-center group"
+            >
+              <ShoppingBag className="w-6 h-6 text-gray-800 group-hover:text-gray-900 transition" />
               {totalItems > 0 && (
-                <span className="absolute -top-2 -right-2 min-w-[18px] h-[18px]
-                  text-[11px] flex items-center justify-center
-                  bg-black text-white rounded-full px-1">
+                <motion.span
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  className="absolute -top-2 -right-2 min-w-18px h-18px text-[11px] flex items-center justify-center bg-black text-white rounded-full px-1 font-semibold"
+                >
                   {totalItems}
-                </span>
+                </motion.span>
               )}
             </Link>
 
-            {/* Mobile Toggle */}
-            <button onClick={() => setOpen(true)} className="md:hidden">
-              <Menu className="w-7 h-7" />
+            {/* Login Button - Desktop */}
+            <Link
+              href="/login"
+              className="hidden md:flex items-center gap-2 px-5 py-2 rounded-full bg-gray-800 text-white font-semibold shadow hover:shadow-lg transition transform hover:-translate-y-0.5 hover:scale-105"
+            >
+              <User className="w-5 h-5" />
+              <span>Login</span>
+            </Link>
+
+            {/* Mobile Menu */}
+            <button
+              onClick={() => setOpen(true)}
+              className="md:hidden p-2 rounded-lg hover:bg-gray-200 transition"
+            >
+              <Menu className="w-7 h-7 text-gray-800" />
             </button>
           </div>
         </div>
@@ -83,28 +96,38 @@ export default function Navbar() {
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ duration: 0.4, ease: "easeInOut" }}
-            className="fixed inset-0 z-[100] bg-white"
+            className="fixed inset-0 bg-gray-100 shadow-lg"
           >
-            <div className="flex items-center justify-between px-6 h-20 border-b">
-              <span className="text-3xl font-black">
+            <div className="flex items-center justify-between px-6 h-20 border-b border-gray-200">
+              <Link href="/" className="text-3xl font-bold text-gray-900">
                 SOLE<span className="text-primary">X</span>
-              </span>
+              </Link>
               <button onClick={() => setOpen(false)}>
-                <X className="w-7 h-7" />
+                <X className="w-7 h-7 text-gray-800" />
               </button>
             </div>
 
-            <nav className="flex flex-col gap-8 px-8 py-16">
+            <nav className="flex flex-col gap-6 px-8 py-16">
               {navLinks.map((link) => (
                 <Link
                   key={link.name}
                   href={link.href}
                   onClick={() => setOpen(false)}
-                  className="text-3xl font-semibold text-gray-800"
+                  className="text-2xl font-semibold text-gray-800 hover:text-gray-900 transition"
                 >
                   {link.name}
                 </Link>
               ))}
+
+              {/* Mobile Login Button */}
+              <Link
+                href="/login"
+                onClick={() => setOpen(false)}
+                className="flex items-center gap-2 justify-center bg-gray-800 text-white py-3 px-6 rounded-full font-semibold shadow hover:shadow-lg transition transform hover:-translate-y-0.5 hover:scale-105 mt-4"
+              >
+                <User className="w-5 h-5" />
+                <span>Login</span>
+              </Link>
             </nav>
           </motion.div>
         )}
