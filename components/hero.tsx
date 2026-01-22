@@ -37,7 +37,7 @@ export default function Hero() {
 
                     <div className="flex gap-4">
                         <Link
-                            href="/shop"
+                            href="/category/women"
                             className="px-8 py-4 bg-white text-black rounded-xl font-semibold hover:scale-105 transition"
                         >
                             Shop Now
