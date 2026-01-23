@@ -1,4 +1,9 @@
+"use client"
+
 import { Package, ShoppingBag, Users, DollarSign } from "lucide-react";
+import { getUsers } from "@/services/auth.api";
+import { useEffect, useState } from "react";
+// your API function
 
 function StatCard({
     title,
@@ -10,7 +15,7 @@ function StatCard({
     icon: React.ReactNode;
 }) {
     return (
-        <div className="bg-white rounded-2xl p-6 shadow-sm flex items-center gap-4 ">
+        <div className="bg-white rounded-2xl p-6 shadow-sm flex items-center gap-4">
             <div className="p-3 rounded-xl bg-slate-100 text-slate-700">
                 {icon}
             </div>
@@ -23,11 +28,30 @@ function StatCard({
 }
 
 export default function AdminDashboardPage() {
-    // 🔌 Later: fetch data from backend / API
+    const [totalUsers, setTotalUsers] = useState(0);
+    const [loading, setLoading] = useState(true);
+
+    // 🔌 Fetch users from backend
+    useEffect(() => {
+        async function fetchUsers() {
+            try {
+                const users = await getUsers(); // call API
+                setTotalUsers(users.length); // update total users stat
+            } catch (err) {
+                console.error("Failed to fetch users:", err);
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        fetchUsers();
+    }, []);
+
+    // You can replace other stats with real API calls later
     const stats = {
         products: 120,
         orders: 86,
-        users: 540,
+        users: totalUsers,
         revenue: "Rs 245,000",
     };
 
@@ -55,7 +79,7 @@ export default function AdminDashboardPage() {
                 />
                 <StatCard
                     title="Total Users"
-                    value={stats.users.toString()}
+                    value={loading ? "Loading..." : stats.users.toString()}
                     icon={<Users size={22} />}
                 />
                 <StatCard
