@@ -24,6 +24,11 @@ export async function register(
   return res.data;
 }
 
+export async function getUsers(): Promise<User[]> {
+  const res = await http.get("/admin/getalluser"); // match backend route
+  return res.data.users; // return only users array
+}
+
 export async function logoutApi(): Promise<void> {
   localStorage.removeItem("token");
   localStorage.removeItem("user");

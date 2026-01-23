@@ -23,7 +23,7 @@ export default function Sidebar() {
                 <Link href="/admin/orders" className="flex items-center gap-2 hover:text-blue-400">
                     <ShoppingBag size={18} /> Orders
                 </Link>
-                <Link href="/admin/users" className="flex items-center gap-2 hover:text-blue-400">
+                <Link href="/ad/admin1/users" className="flex items-center gap-2 hover:text-blue-400">
                     <Users size={18} /> Users
                 </Link>
                 <Link href="/admin/settings" className="flex items-center gap-2 hover:text-blue-400">
