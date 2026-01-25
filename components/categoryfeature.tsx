@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 
 const categories = [
   { name: "Men", slug: "men", image: "/men.jpg" },
-  { name: "Women", slug: "women", image: "/women1.webp" },
+  { name: "Women", slug: "women", image: "/catw.webp" },
   { name: "Accessories", slug: "accessories", image: "/bag.jpg" },
 ];
 
@@ -21,7 +21,7 @@ export default function CategoryShowcase() {
           <motion.div
             key={cat.slug}
             whileHover={{ scale: 1.05 }}
-            className="relative h-[420px] rounded-3xl overflow-hidden group"
+            className="relative h-[420] rounded-3xl overflow-hidden group"
           >
             <img
               src={cat.image}
