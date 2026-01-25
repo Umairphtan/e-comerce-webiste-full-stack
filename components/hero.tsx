@@ -64,9 +64,9 @@ export default function Hero() {
                     <div className="absolute w-72 h-72 bg-white/10 blur-3xl rounded-full" />
 
                     <motion.img
-                        src="/hero.jpg"
+                        src="/heroo.webp"
                         alt="Hero Shoe"
-                        className="relative w-[280px] md:w-[380px] xl:w-[480px] drop-shadow-[0_40px_40px_rgba(0,0,0,0.6)]"
+                        className="relative w-[400] md:w-[380] xl:w-[480] drop-shadow-[0_40px_40px_rgba(0,0,0,0.6)]"
                         animate={{ y: [0, -15, 0] }}
                         transition={{
                             duration: 5,

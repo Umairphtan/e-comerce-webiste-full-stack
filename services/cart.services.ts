@@ -1,55 +1,27 @@
 import http from "@/services/http";
-import { Cart } from "@/types/cart";
+import { Cart } from "../types/cart";
 
-// ➕ Add to cart
-export const addToCart = async (
-  productId: string,
-  quantity: number = 1
-) => {
-  const res = await http.post(
-    "/cart/add",
-    { productId, quantity },
-    { withCredentials: true }
-  );
-  return res.data;
-};
-
-// 🛒 Get my cart
 export const getMyCart = async (): Promise<Cart> => {
-  const res = await http.get("/cart", {
-    withCredentials: true,
-  });
-  return res.data.cart;
+  const { data } = await http.get("/cart");
+  return data.cart || { items: [] };
 };
 
-// ✏ Update quantity
-export const updateCartItem = async (
-  productId: string,
-  quantity: number
-) => {
-  const res = await http.put(
-    "/cart/update",
-    { productId, quantity },
-    { withCredentials: true }
-  );
-  return res.data;
+export const addToCart = async (productId: string, quantity: number = 1) => {
+  const { data } = await http.post("/cart/add", { productId, quantity });
+  return data.cart;
 };
 
-// ❌ Remove item
-export const removeFromCart = async (
-  productId: string
-) => {
-  const res = await http.delete(
-    `/cart/remove/${productId}`,
-    { withCredentials: true }
-  );
-  return res.data;
+export const updateCartItem = async (productId: string, quantity: number) => {
+  const { data } = await http.put("/cart/update", { productId, quantity });
+  return data.cart;
 };
 
-// 🧹 Clear cart
+export const removeFromCart = async (productId: string) => {
+  const { data } = await http.delete(`/cart/remove/${productId}`);
+  return data.cart;
+};
+
 export const clearCart = async () => {
-  const res = await http.delete("/cart/clear", {
-    withCredentials: true,
-  });
-  return res.data;
+  const { data } = await http.delete("/cart/clear");
+  return data.cart;
 };
