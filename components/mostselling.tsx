@@ -4,10 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { mostSellingProducts } from "@/data/mostselling";
 import { motion } from "framer-motion";
-import { useCart } from "@/context/cartcontext";
 
 export default function MostSelling() {
-  const { addToCart } = useCart();
 
   return (
     <section className="py-14 px-4 sm:px-6 max-w-7xl mx-auto">
@@ -46,12 +44,7 @@ export default function MostSelling() {
               <div className="mt-auto flex items-center justify-between pt-4">
                 <span className="font-bold">${product.price}</span>
 
-                <button
-                  onClick={() => addToCart(product)}
-                  className="px-4 py-2 text-sm rounded-full bg-black text-white hover:bg-gray-800"
-                >
-                  Add to Cart
-                </button>
+             
               </div>
             </div>
           </motion.div>

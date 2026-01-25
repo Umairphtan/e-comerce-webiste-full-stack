@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "@/context/authcontext";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 
 export default function LoginPage() {
-  const { login, isAuthenticated } = useAuth();
+  const { login, isAuthenticated, loading: authLoading } = useAuth();
   const router = useRouter();
 
   const [email, setEmail] = useState("");
@@ -14,15 +14,23 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  // ✅ Redirect if already authenticated
+  useEffect(() => {
+    if (!authLoading && isAuthenticated) {
+      router.push("/"); // safe redirect after auth status known
+    }
+  }, [isAuthenticated, authLoading, router]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (loading) return;
+
     setLoading(true);
     setError("");
 
     try {
       await login(email, password);
-      router.push("/"); 
+      router.push("/"); // safe
     } catch (err: any) {
       setError(err.response?.data?.message || err.message || "Login failed");
     } finally {
@@ -30,11 +38,25 @@ export default function LoginPage() {
     }
   };
 
-  if (isAuthenticated) {
-    router.push("/"); 
-    return null;
+  // 🔹 Show nothing / loader while auth status loading
+  if (authLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p>Checking authentication...</p>
+      </div>
+    );
   }
 
+  // 🔹 If authenticated, redirecting
+  if (isAuthenticated) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p>Redirecting...</p>
+      </div>
+    );
+  }
+
+  // 🔹 Render login form only if not authenticated
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
       <motion.div
