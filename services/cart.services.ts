@@ -25,3 +25,14 @@ export const clearCart = async () => {
   const { data } = await http.delete("/cart/clear");
   return data.cart;
 };
+export const getCartCount = async (): Promise<number> => {
+  try {
+    const { data } = await http.get("/cart/count");
+    if (data.success) return data.count;
+    return 0;
+  } catch (err) {
+    console.error("Error fetching cart count:", err);
+    return 0;
+  }
+};
+
