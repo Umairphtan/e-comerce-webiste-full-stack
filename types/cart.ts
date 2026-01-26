@@ -1,14 +1,14 @@
+import { Product } from "./produuct";
+
 export interface CartItem {
-  product: string;        // productId
+  product: Product | null;  
   title: string;
   priceAtPurchase: number;
   quantity: number;
 }
 
 export interface Cart {
-  _id: string;
-  user: string;
+  _id?: string;
+  user?: string;
   items: CartItem[];
-  createdAt?: string;
-  updatedAt?: string;
 }
