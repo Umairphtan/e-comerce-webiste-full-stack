@@ -16,10 +16,10 @@ const AddToCartButton: React.FC<Props> = ({ productId }) => {
     try {
       await addToCart(productId, 1);
       setAdded(true);
-      setTimeout(() => setAdded(false), 1500); // temporary success
+      setTimeout(() => setAdded(false), 1500);
     } catch (err: any) {
-      console.error("Failed to add to cart", err);
-      alert(err.response?.data?.message || "Failed to add to cart");
+      // ❌ console.error hata diya
+      alert(err.message);
     } finally {
       setLoading(false);
     }
