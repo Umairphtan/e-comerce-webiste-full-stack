@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { CartItem as CartItemType } from "../types/cart";
 import { updateCartItem, removeFromCart } from "../services/cart.services";
 
@@ -20,33 +20,39 @@ const CartItem: React.FC<Props> = ({ item, onUpdate }) => {
     );
   }
 
-  const cartQuantity = item.quantity || 0;
-
-  const [remainingStock, setRemainingStock] = useState(
-    Math.max((product.stock || 0) - cartQuantity, 0)
-  );
-
-  const [qty, setQty] = useState(cartQuantity);
-
-  useEffect(() => {
-    setRemainingStock(Math.max((product.stock || 0) - qty, 0));
-  }, [qty, product.stock]);
+  const maxStock = product.stock || 0;
+  const [qty, setQty] = useState(item.quantity);
 
   const handleUpdate = async () => {
     if (!product._id) return;
-    const newQty = Math.min(qty, cartQuantity + remainingStock);
-    const cart = await updateCartItem(product._id, newQty);
-    onUpdate(cart);
+
+    if (qty < 1 || qty > maxStock) {
+      alert("Invalid quantity");
+      return;
+    }
+
+    try {
+      const cart = await updateCartItem(product._id, qty);
+      onUpdate(cart);
+    } catch (err: any) {
+      alert(err.message);
+    }
   };
 
   const handleRemove = async () => {
     if (!product._id) return;
-    const cart = await removeFromCart(product._id);
-    onUpdate(cart);
+
+    try {
+      const cart = await removeFromCart(product._id);
+      onUpdate(cart);
+    } catch (err: any) {
+      alert(err.message);
+    }
   };
 
   return (
     <div className="flex flex-col md:flex-row items-center justify-between p-4 border-b">
+      {/* PRODUCT INFO */}
       <div className="flex items-center gap-4">
         {product.image && (
           <img
@@ -55,13 +61,14 @@ const CartItem: React.FC<Props> = ({ item, onUpdate }) => {
             className="h-20 w-20 object-cover rounded"
           />
         )}
+
         <div>
           <h3 className="font-semibold">{item.title}</h3>
           <p className="text-gray-700">${item.priceAtPurchase}</p>
 
-          {remainingStock > 0 ? (
+          {maxStock > 0 ? (
             <p className="text-green-600 text-sm">
-              In Stock ({remainingStock})
+              In Stock ({maxStock})
             </p>
           ) : (
             <p className="text-red-600 text-sm">Sold Out</p>
@@ -69,23 +76,26 @@ const CartItem: React.FC<Props> = ({ item, onUpdate }) => {
         </div>
       </div>
 
-      <div className="flex items-center gap-2 mt-2 md:mt-0">
+      {/* ACTIONS */}
+      <div className="flex items-center gap-2 mt-3 md:mt-0">
         <input
           type="number"
-          value={qty}
           min={1}
-          max={cartQuantity + remainingStock} // max quantity allowed
+          max={maxStock}
+          value={qty}
           onChange={(e) => setQty(Number(e.target.value))}
           className="w-16 border p-1"
-          disabled={remainingStock === 0}
+          disabled={maxStock === 0}
         />
+
         <button
           onClick={handleUpdate}
-          className="bg-blue-500 text-white px-3 py-1 rounded"
-          disabled={remainingStock === 0}
+          className="bg-blue-500 text-white px-3 py-1 rounded disabled:opacity-50"
+          disabled={maxStock === 0 || qty === item.quantity}
         >
           Update
         </button>
+
         <button
           onClick={handleRemove}
           className="bg-red-500 text-white px-3 py-1 rounded"
