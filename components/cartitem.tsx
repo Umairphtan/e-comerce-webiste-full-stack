@@ -26,7 +26,7 @@ const CartItem: React.FC<Props> = ({ item, onUpdate }) => {
   const handleUpdate = async () => {
     if (!product._id) return;
 
-    if (qty < 1 || qty > maxStock) {
+    if (qty < 0 || qty > maxStock) {
       alert("Invalid quantity");
       return;
     }
